@@ -1,0 +1,57 @@
+/* Adições no css/style.css para a página de Relatórios */
+
+.filter-input {
+    background: transparent;
+    border: 1px solid #0dcaf0; /* Azul claro do design para os filtros */
+    color: var(--text-main);
+    border-radius: 5px;
+    padding: 5px 10px;
+    width: 100%;
+}
+
+.filter-input::placeholder {
+    color: #0dcaf0;
+    opacity: 0.7;
+}
+
+.btn-outline-search {
+    border: 1px solid #8b5cf6;
+    color: #8b5cf6;
+    background: transparent;
+    border-radius: 20px;
+    padding: 5px 20px;
+}
+
+.btn-export {
+    background: transparent;
+    border: 1px solid #d946ef; /* Rosa/Roxo dos botões de exportar */
+    color: #d946ef;
+    border-radius: 5px;
+}
+
+/* Estilo da Tabela Dark */
+.table-dark-custom {
+    background-color: transparent;
+    color: #e5e7eb;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px; /* Espaço entre as linhas */
+}
+
+.table-dark-custom th {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 15px 10px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.table-dark-custom td {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 15px 10px;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.text-success-custom { color: #10b981; }
+.text-danger-custom { color: #ef4444; }
