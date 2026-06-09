@@ -3,8 +3,8 @@ $pagina_atual = basename($_SERVER['PHP_SELF']);
 $perfil = $_SESSION['perfil'] ?? 'funcionario';
 ?>
 <div class="sidebar">
-    <div class="ms-4 mb-5 mt-2">
-        <h4 class="text-white fw-bold m-0" style="font-style: italic;">Asserti <span style="color:#3b82f6;">></span></h4>
+    <div class="ms-4 mb-5 mt-5">
+        <img src="icones/logo_branca.png" width="200"> 
     </div>
     
     <a href="dashboard.php" class="<?= $pagina_atual == 'dashboard.php' ? 'active' : '' ?>">

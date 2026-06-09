@@ -109,12 +109,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
     
-    <div class="row align-items-center mb-2">
-        <div class="col-md-6">
-            <button type="button" class="btn-green">
-                <img src="icones/documento.svg" width="16" style="margin-right: 8px; vertical-align: text-bottom;"> documentos necessários
-            </button>
-        </div>
         <div class="col-md-6 d-flex flex-column align-items-end">
             <div class="form-check form-switch mb-3 d-flex align-items-center gap-3">
                 <label class="form-check-label text-white fw-bold m-0">A empresa exporta produtos?<span class="asterisk">*</span></label>

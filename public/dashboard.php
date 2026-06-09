@@ -57,7 +57,7 @@ try {
 
     <div class="main-content">
         <div class="d-flex justify-content-end mb-4">
-            <h5 class="text-white fw-bold m-0" style="font-style: italic;">Dashboard <span style="color:#3b82f6;">></span></h5>
+            <h5 class="text-white fw-bold m-0" style="font-style: italic;">Dashboard <img src="icones/so_logo.png" width="40"></span></h5>
         </div>
 
         <div class="row g-4 mb-4">

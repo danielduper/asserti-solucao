@@ -82,7 +82,79 @@ $lista_usuarios = $stmt_lista->fetchAll(PDO::FETCH_ASSOC);
         .btn-submit:hover { background-color: #2563eb; }
         .btn-clear { background: transparent; border: 1px solid #555; color: #aaa; padding: 0 20px; border-radius: 0; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
         .btn-clear:hover { background: #333; color: #fff; }
-        select option { background-color: #212121; color: white; }
+        
+        /* Dropdown customizado para total controle de cores/hover */
+        .custom-select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        .custom-select-trigger {
+            background: transparent;
+            border: 1px solid #555;
+            color: white;
+            border-radius: 0;
+            padding: 12px 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            font-size: 0.9rem;
+            transition: border-color 0.2s;
+        }
+        .custom-select-trigger:after {
+            content: "";
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid #888;
+            margin-left: 10px;
+            transition: transform 0.2s, border-top-color 0.2s;
+        }
+        .custom-select-wrapper.open .custom-select-trigger {
+            border-color: #3b82f6;
+        }
+        .custom-select-wrapper.open .custom-select-trigger:after {
+            transform: rotate(180deg);
+            border-top-color: #3b82f6;
+        }
+        .custom-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: #212121;
+            border: 1px solid #333;
+            border-radius: 0;
+            margin-top: 4px;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+        }
+        .custom-select-wrapper.open .custom-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .custom-option {
+            padding: 12px 15px;
+            color: #e5e7eb;
+            cursor: pointer;
+            transition: background-color 0.15s, color 0.15s;
+            font-size: 0.9rem;
+        }
+        .custom-option:hover {
+            background-color: #3b82f6; /* Cor de hover desejada (azul Bootstrap) */
+            color: #ffffff;
+        }
+        .custom-option.selected {
+            background-color: #2a2a2a;
+            color: #3b82f6;
+            font-weight: 600;
+        }
         
         .metric-value { font-size: 2.5rem; font-weight: bold; color: #fff; margin-top: 5px; }
         
@@ -101,7 +173,7 @@ $lista_usuarios = $stmt_lista->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="main-content">
         <div class="d-flex justify-content-end mb-4">
-            <h5 class="text-white fw-bold m-0" style="font-style: italic;">Gestão de Acessos <span style="color:#3b82f6;">></span></h5>
+            <h5 class="text-white fw-bold m-0" style="font-style: italic;">Gestão de Acessos <img src="icones/so_logo.png" width="40"></span></h5>
         </div>
         
         <div class="row g-4 mb-4">
@@ -136,10 +208,14 @@ $lista_usuarios = $stmt_lista->fetchAll(PDO::FETCH_ASSOC);
                         <div class="mb-3"><label style="color: #888;" class="form-label small">Senha</label><input type="password" name="senha" class="form-control flat-input" required autocomplete="new-password"></div>
                         <div class="mb-4">
                             <label style="color: #888;" class="form-label small">Nível de Permissão</label>
-                            <select name="perfil" class="form-select flat-input" required>
-                                <option value="funcionario">Funcionário (Acesso Restrito)</option>
-                                <option value="admin">Administrador (Acesso Total)</option>
-                            </select>
+                            <div class="custom-select-wrapper">
+                                <div class="custom-select-trigger">Funcionário (Acesso Restrito)</div>
+                                <div class="custom-options">
+                                    <div class="custom-option selected" data-value="funcionario">Funcionário (Acesso Restrito)</div>
+                                    <div class="custom-option" data-value="admin">Administrador (Acesso Total)</div>
+                                </div>
+                                <input type="hidden" name="perfil" value="funcionario">
+                            </div>
                         </div>
                         <button type="submit" class="btn-submit">Criar Conta</button>
                     </form>
@@ -156,11 +232,24 @@ $lista_usuarios = $stmt_lista->fetchAll(PDO::FETCH_ASSOC);
                             <input type="text" name="busca_usuario" class="form-control flat-input w-100" placeholder="Buscar por nome de usuário..." value="<?= htmlspecialchars($_GET['busca_usuario'] ?? '') ?>">
                         </div>
                         <div style="width: 220px;">
-                            <select name="filtro_perfil" class="form-select flat-input">
-                                <option value="">Todos os Perfis</option>
-                                <option value="admin" <?= (isset($_GET['filtro_perfil']) && $_GET['filtro_perfil'] == 'admin') ? 'selected' : '' ?>>Administradores</option>
-                                <option value="funcionario" <?= (isset($_GET['filtro_perfil']) && $_GET['filtro_perfil'] == 'funcionario') ? 'selected' : '' ?>>Funcionários</option>
-                            </select>
+                            <?php
+                            $filtro_perfil_atual = $_GET['filtro_perfil'] ?? '';
+                            $texto_filtro_atual = 'Todos os Perfis';
+                            if ($filtro_perfil_atual === 'admin') {
+                                $texto_filtro_atual = 'Administradores';
+                            } elseif ($filtro_perfil_atual === 'funcionario') {
+                                $texto_filtro_atual = 'Funcionários';
+                            }
+                            ?>
+                            <div class="custom-select-wrapper">
+                                <div class="custom-select-trigger"><?= $texto_filtro_atual ?></div>
+                                <div class="custom-options">
+                                    <div class="custom-option <?= $filtro_perfil_atual === '' ? 'selected' : '' ?>" data-value="">Todos os Perfis</div>
+                                    <div class="custom-option <?= $filtro_perfil_atual === 'admin' ? 'selected' : '' ?>" data-value="admin">Administradores</div>
+                                    <div class="custom-option <?= $filtro_perfil_atual === 'funcionario' ? 'selected' : '' ?>" data-value="funcionario">Funcionários</div>
+                                </div>
+                                <input type="hidden" name="filtro_perfil" value="<?= htmlspecialchars($filtro_perfil_atual) ?>">
+                            </div>
                         </div>
                         <button type="submit" class="btn-submit" style="width: auto;">Buscar</button>
                         <a href="usuarios.php" class="btn-clear">Limpar</a>
@@ -212,5 +301,43 @@ $lista_usuarios = $stmt_lista->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
     </div>
+    
+    <script>
+        document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
+            const trigger = wrapper.querySelector('.custom-select-trigger');
+            const options = wrapper.querySelectorAll('.custom-option');
+            const hiddenInput = wrapper.querySelector('input[type="hidden"]');
+            
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // Fecha outros dropdowns customizados abertos
+                document.querySelectorAll('.custom-select-wrapper').forEach(other => {
+                    if (other !== wrapper) other.classList.remove('open');
+                });
+                wrapper.classList.toggle('open');
+            });
+            
+            options.forEach(option => {
+                option.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    options.forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    trigger.innerText = option.innerText;
+                    hiddenInput.value = option.getAttribute('data-value');
+                    wrapper.classList.remove('open');
+                    
+                    // Dispara evento de change no input oculto
+                    hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+                });
+            });
+        });
+        
+        // Fecha os dropdowns ao clicar fora
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
+                wrapper.classList.remove('open');
+            });
+        });
+    </script>
 </body>
 </html>

@@ -102,7 +102,7 @@ function linkPagina($pag) {
         </div>
 
         <div class="d-flex justify-content-end mb-4 area-filtros-topo">
-            <h5 class="text-white fw-bold m-0" style="font-style: italic;">Relatório <span style="color:#3b82f6;">></span></h5>
+            <h5 class="text-white fw-bold m-0" style="font-style: italic;">Relatório <img src="icones/so_logo.png" width="40"></span></h5>
         </div>
         
         <form method="GET" class="mb-4">
